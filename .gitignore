@@ -1,0 +1,4 @@
+__pycache__/
+data/spam_files/
+*.pyc
+.ipynb_checkpoints/
