@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing Detector</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin-top: 50px; background-color: #f0f2f5; }
+        .box { background: white; padding: 30px; display: inline-block; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 400px; }
+        textarea { width: 100%; height: 120px; border-radius: 8px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; resize: none; }
+        
+        .btn-container { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        
+        button { padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .analyze-btn { background: #007bff; color: white; }
+        .analyze-btn:hover { background: #0056b3; }
+        
+        .clear-btn { background: #6c757d; color: white; }
+        .clear-btn:hover { background: #5a6268; }
+        
+        #res { margin-top: 25px; font-size: 1.2rem; min-height: 30px; }
+        .phish { color: #d9534f; font-weight: bold; }
+        .safe { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>🛡️ Phishing Link Detector</h2>
+        <textarea id="msg" placeholder="Paste message here..."></textarea>
+        
+        <div class="btn-container">
+            <button class="analyze-btn" onclick="check()">Analyze Message</button>
+            <button class="clear-btn" onclick="clearAll()">Clear</button>
+        </div>
+        
+        <div id="res"></div>
+    </div>
+
+    <script>
+        async function check() {
+            const msg = document.getElementById('msg').value;
+            const res = document.getElementById('res');
+            if(!msg) return res.innerText = "Please enter a message.";
+            
+            res.innerText = "🔍 Analyzing...";
+            res.className = "";
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: msg})
+                });
+                const data = await response.json();
+                
+                res.innerText = data.prediction;
+                // Add color based on result
+                if(data.prediction.includes("Detected")) {
+                    res.className = "phish";
+                } else {
+                    res.className = "safe";
+                }
+            } catch (err) {
+                res.innerText = "❌ Connection Error";
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('msg').value = "";
+            const res = document.getElementById('res');
+            res.innerText = "";
+            res.className = "";
+        }
+    </script>
+</body>
+</html>
