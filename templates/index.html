@@ -3,108 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Phishing Detector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>PhishShield AI</title>
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #3b82f6;
-            --danger: #ef4444;
-            --success: #22c55e;
-            --text-main: #f8fafc;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        h1 { font-weight: 800; margin-bottom: 0.5rem; }
-        p.subtitle { color: #94a3b8; margin-bottom: 2rem; }
-
-        textarea {
-            width: 100%;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 2px solid #334155;
-            background-color: #0f172a;
-            color: white;
-            font-size: 1rem;
-            resize: none;
-            margin-bottom: 1.5rem;
-            box-sizing: border-box;
-        }
-
-        textarea:focus { border-color: var(--accent); outline: none; }
-
-        button {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            width: 100%;
-        }
-
-        button:hover { background-color: #2563eb; transform: translateY(-2px); }
-
-        .result-box {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px solid;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .red { border-color: var(--danger); background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .green { border-color: var(--success); background-color: rgba(34, 197, 94, 0.1); color: var(--success); }
+        body { font-family: sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; padding: 50px; }
+        .card { background: #1e293b; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; text-align: center; }
+        textarea { width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 20px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; border: 2px solid; }
+        .red { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .green { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
     </style>
 </head>
 <body>
-
-    <div class="container">
+    <div class="card">
         <h1>🛡️ PhishShield AI</h1>
-        <p class="subtitle">Enter a message or URL below to check for phishing risks.</p>
-
         <form action="/predict" method="POST">
-            <textarea name="message" rows="4" placeholder="Paste suspicious text here..." required>{{ message }}</textarea>
-            <button type="submit">Analyze Message</button>
+            <textarea name="message" rows="4" placeholder="Paste message here..." required>{{ message }}</textarea>
+            <button type="submit">Scan for Threats</button>
         </form>
 
         {% if prediction %}
-        <div class="result-box {{ color }}">
-            <h3>Result:</h3>
-            <p><strong>{{ prediction }}</strong></p>
+        <div class="result {{ color }}">
+            <strong>{{ prediction }}</strong>
         </div>
         {% endif %}
     </div>
-
 </body>
 </html>
