@@ -3,30 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishShield AI</title>
+    <title>Phishing-Detector AI</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; padding: 50px; }
-        .card { background: #1e293b; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; text-align: center; }
-        textarea { width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 20px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .result { margin-top: 20px; padding: 15px; border-radius: 5px; border: 2px solid; }
+        body { font-family: -apple-system, sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; padding: 40px; }
+        .card { background: #1e293b; padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); text-align: center; }
+        textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 20px; box-sizing: border-box; font-size: 16px; }
+        
+        .button-group { display: flex; gap: 10px; }
+        
+        button { flex: 2; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #2563eb; }
+        
+        .btn-clear { flex: 1; background: #475569; }
+        .btn-clear:hover { background: #64748b; }
+
+        .result { margin-top: 25px; padding: 15px; border-radius: 8px; border: 2px solid; font-weight: bold; }
         .red { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
         .green { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>🛡️ PhishShield AI</h1>
-        <form action="/predict" method="POST">
-            <textarea name="message" rows="4" placeholder="Paste message here..." required>{{ message }}</textarea>
-            <button type="submit">Scan for Threats</button>
+        <h1>🛡️ Phishing-Detector</h1>
+        <p style="color: #94a3b8;">AI-Powered Scam Identification</p>
+        
+        <form action="/predict" method="POST" id="mainForm">
+            <textarea name="message" id="messageArea" rows="5" placeholder="Paste the suspicious message here..." required>{{ message }}</textarea>
+            
+            <div class="button-group">
+                <button type="submit">Analyze for Risks</button>
+                <button type="button" class="btn-clear" onclick="clearAll()">Clear</button>
+            </div>
         </form>
 
         {% if prediction %}
-        <div class="result {{ color }}">
-            <strong>{{ prediction }}</strong>
+        <div id="resultBox" class="result {{ color }}">
+            {{ prediction }}
         </div>
         {% endif %}
     </div>
+
+    <script>
+        function clearAll() {
+            // Clear the text area
+            document.getElementById('messageArea').value = '';
+            
+            // Hide the result box if it exists
+            const resultBox = document.getElementById('resultBox');
+            if (resultBox) {
+                resultBox.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
